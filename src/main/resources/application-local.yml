@@ -5,9 +5,14 @@ spring:
   config:
     activate:
       on-profile: local
-
+  jpa:
+    hibernate:
+      ddl-auto: ${jpa.ddl-auto}
+    properties:
+      hibernate:
+        format_sql: true
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:tmbm
-    username: sa
-    password:
+    url: ${h2.url}
+    username: ${h2.username}
+    password: ${h2.password}
