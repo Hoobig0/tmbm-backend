@@ -28,7 +28,6 @@ dependencies {
 
 	//Hibernate
 	implementation "org.hibernate.orm:hibernate-spatial:6.4.4.Final"
-	testImplementation 'org.projectlombok:lombok:1.18.22'
 
 	//Lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -36,7 +35,7 @@ dependencies {
 
 	//DB
 	runtimeOnly 'com.mysql:mysql-connector-j'
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.h2database:h2:2.2.220'
 	runtimeOnly 'org.orbisgis:h2gis:2.2.1'
 
 	//Test
