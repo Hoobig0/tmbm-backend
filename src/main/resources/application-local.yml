@@ -16,3 +16,6 @@ spring:
     url: jdbc:h2:mem:tmbm
     username: sa
     password:
+    sql:
+      init:
+        schema-locations: schema.sql
