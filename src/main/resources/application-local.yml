@@ -5,9 +5,17 @@ spring:
   config:
     activate:
       on-profile: local
-
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:tmbm
     username: sa
     password:
+    sql:
+      init:
+        schema-locations: schema.sql
