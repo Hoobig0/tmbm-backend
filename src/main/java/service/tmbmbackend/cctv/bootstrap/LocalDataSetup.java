@@ -1,4 +1,4 @@
-package service.tmbmbackend.bootstrap;
+package service.tmbmbackend.cctv.bootstrap;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.usermodel.Row;
@@ -10,6 +10,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import service.tmbmbackend.cctv.CCTV;
+import service.tmbmbackend.cctv.repository.CCTVRepository;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +20,7 @@ import java.io.InputStream;
 @Profile("local")
 @RequiredArgsConstructor
 public class LocalDataSetup implements ApplicationRunner {
+    private final CCTVRepository cctvRepository;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -33,11 +36,13 @@ public class LocalDataSetup implements ApplicationRunner {
                 if(row.getRowNum() == 0){
                     continue;
                 }
-                System.out.println(row.getCell(0).getStringCellValue()
-                        + row.getCell(1).getStringCellValue()
-                        + row.getCell(2).getStringCellValue()
-                        + row.getCell(11).getStringCellValue()
-                        + row.getCell(12).getStringCellValue());
+
+                Long id = Long.parseLong(row.getCell(0).getStringCellValue());
+                double x = Double.parseDouble(row.getCell(11).getStringCellValue());
+                double y = Double.parseDouble(row.getCell(12).getStringCellValue());
+
+                CCTV cctv = new CCTV(id, x, y);
+                cctvRepository.save(cctv);
             }
             workbook.close();
         } catch (IOException e) {
