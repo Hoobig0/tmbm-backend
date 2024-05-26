@@ -1,8 +1,6 @@
 package service.tmbmbackend.cctv;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +14,9 @@ import org.locationtech.jts.geom.Point;
 @AllArgsConstructor
 public class CCTV {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    
     @Column
     Point point;
 
