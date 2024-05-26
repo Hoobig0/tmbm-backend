@@ -1,4 +1,4 @@
-package service.tmbmbackend.cctv.bootstrap;
+package service.tmbmbackend.bootstrap;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

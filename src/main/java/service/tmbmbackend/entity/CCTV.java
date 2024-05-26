@@ -1,4 +1,4 @@
-package service.tmbmbackend.cctv;
+package service.tmbmbackend.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
