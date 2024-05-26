@@ -20,10 +20,10 @@ public class LocalDataSetup implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        executeInsertSql();
+        insertInitialData();
     }
 
-    private void executeInsertSql() throws Exception {
+    private void insertInitialData() throws Exception {
         Path path = Paths.get(new ClassPathResource("insert-statement.sql").getURI());
         try (Stream<String> stream = Files.lines(path)) {
             String sql = stream.collect(Collectors.joining(System.lineSeparator()));
