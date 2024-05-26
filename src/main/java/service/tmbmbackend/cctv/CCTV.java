@@ -16,13 +16,17 @@ public class CCTV {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    
+
     @Column
     Point point;
 
     public CCTV(Long id, double x, double y) {
-        GeometryFactory geometryFactory = new GeometryFactory();
-        this.point = geometryFactory.createPoint(new Coordinate(x, y));
+        this.point = createPoint(x, y);
         this.id = id;
+    }
+
+    private Point createPoint(double x, double y) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        return geometryFactory.createPoint(new Coordinate(x, y));
     }
 }
