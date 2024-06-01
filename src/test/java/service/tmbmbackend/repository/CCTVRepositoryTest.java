@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Polygon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import service.tmbmbackend.entity.CCTV;
 
@@ -36,8 +38,8 @@ class CCTVRepositoryTest {
         cctvRepository.save(savedCctv);
 
         //then
-        List<CCTV> cctvList = cctvRepository.findWithin(radius, PageRequest.of(0, 10));
-        assertThat(cctvList.get(0).getId()).isEqualTo(savedCctv.getId());
+        Page<CCTV> cctvList = cctvRepository.findWithin(radius, PageRequest.of(0, 10));
+        assertThat(cctvList.getContent().stream().collect(Collectors.toList()).get(0).getId()).isEqualTo(savedCctv.getId());
     }
 
     @DisplayName("CCTV가 주어진 반경 내에 없는 경우, Null 값을 반환한다.")
@@ -51,9 +53,10 @@ class CCTVRepositoryTest {
         cctvRepository.save(savedCctv);
 
         //then
-        List<CCTV> cctvList = cctvRepository.findWithin(radius, PageRequest.of(0, 10));
+        Page<CCTV> cctvList = cctvRepository.findWithin(radius, PageRequest.of(0, 10));
+
         List<CCTV> expectedResult = new ArrayList<>();
-        assertThat(cctvList).isEqualTo(expectedResult);
+        assertThat(cctvList.getContent().stream().collect(Collectors.toList())).isEqualTo(expectedResult);
     }
 
     private static Polygon createRadius() {
