@@ -54,9 +54,10 @@ class CCTVRepositoryTest {
 
         //then
         Page<CCTV> cctvList = cctvRepository.findWithin(radius, PageRequest.of(0, 10));
+        List<CCTV> actualResult = cctvList.getContent().stream().collect(Collectors.toList());
 
         List<CCTV> expectedResult = new ArrayList<>();
-        assertThat(cctvList.getContent().stream().collect(Collectors.toList())).isEqualTo(expectedResult);
+        assertThat(actualResult).isEqualTo(expectedResult);
     }
 
     private static Polygon createRadius() {
