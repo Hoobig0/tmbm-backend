@@ -9,14 +9,21 @@ public class CCTVMetaResponse implements MetaResponse {
     private String prevUrl;
     private String nextUrl;
 
-    public CCTVMetaResponse(CCTVZoneRequest cctvZoneRequest, boolean hasPrev, boolean hasNext) {
-        if (hasPrev) {
-            this.prevUrl = String.format(Path.CCTV_LIST,
-                    cctvZoneRequest.getX(), cctvZoneRequest.getY(), cctvZoneRequest.getPageRequest().previous().getPageNumber(), cctvZoneRequest.getPageRequest().getPageSize());
+    public CCTVMetaResponse(CCTVZoneRequest cctvZoneRequest, int totalCount) {
+        int currentPage = cctvZoneRequest.getPageRequest().getPageNumber();
+        int pageSize = cctvZoneRequest.getPageRequest().getPageSize();
+        int nowCount = currentPage * pageSize;
+
+        if (currentPage != 0) {
+            this.prevUrl = createUrl(Path.CCTV_LIST, cctvZoneRequest.getX(),
+                    cctvZoneRequest.getY(), currentPage - 1, pageSize);
         }
-        if (hasNext) {
-            this.nextUrl = String.format(Path.CCTV_LIST,
-                    cctvZoneRequest.getX(), cctvZoneRequest.getY(), cctvZoneRequest.getPageRequest().next().getPageNumber(), cctvZoneRequest.getPageRequest().getPageSize());
+        if (totalCount > nowCount) {
+            this.nextUrl = createUrl(Path.CCTV_LIST, cctvZoneRequest.getX(),
+                    cctvZoneRequest.getY(), currentPage + 1, pageSize);
         }
+    }
+    private String createUrl(String cctvUrl, double x, double y, int page, int size) {
+        return String.format(cctvUrl, x, y, page, size);
     }
 }

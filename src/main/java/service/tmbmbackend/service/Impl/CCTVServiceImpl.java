@@ -4,9 +4,8 @@ import static service.tmbmbackend.entity.CCTV.calculateCircleRadius;
 import static service.tmbmbackend.entity.CCTV.sortCCTVListByDistance;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
+import org.locationtech.jts.geom.Geometry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import service.tmbmbackend.dto.CCTVMetaResponse;
@@ -25,14 +24,15 @@ public class CCTVServiceImpl implements CCTVService {
     private final CCTVRepository cctvRepository;
     @Override
     public Response getAllCCTVs(CCTVZoneRequest cctvZoneRequest) {
-        Page<CCTV> cctvs = cctvRepository.findWithin(
-                calculateCircleRadius(cctvZoneRequest.getX(), cctvZoneRequest.getY(),
-                        cctvZoneRequest.getRadius()), cctvZoneRequest.getPageRequest());
+        Geometry circleRadius = calculateCircleRadius(cctvZoneRequest.getX(),
+                cctvZoneRequest.getY(), cctvZoneRequest.getRadius());
 
-        CCTVMetaResponse cctvMetaResponse = new CCTVMetaResponse(cctvZoneRequest, cctvs.hasPrevious(), cctvs.hasNext());
-        List<DataResponse> cctvDataResponses = CCTVDataResponse.toList(
-                sortCCTVListByDistance(cctvZoneRequest.getX(), cctvZoneRequest.getY(),
-                        cctvs.getContent().stream().collect(Collectors.toList())));
-        return new Response(cctvMetaResponse, cctvDataResponses);
+        List<CCTV> cctvs = cctvRepository.findWithin(circleRadius, cctvZoneRequest.getPageRequest());
+        int totalCount = cctvRepository.findTotalCCTVCount(circleRadius);
+
+        CCTVMetaResponse cctvMetaResponse = new CCTVMetaResponse(cctvZoneRequest, totalCount);
+        List<DataResponse> cctvDataResponse = CCTVDataResponse.toList(
+                sortCCTVListByDistance(cctvZoneRequest.getX(), cctvZoneRequest.getY(), cctvs));
+        return new Response(cctvMetaResponse, cctvDataResponse);
     }
 }
