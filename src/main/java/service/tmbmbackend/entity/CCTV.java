@@ -17,6 +17,8 @@ import org.locationtech.jts.util.GeometricShapeFactory;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CCTV {
+    public static final double EARTHRADIUS = 6371;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -40,14 +42,12 @@ public class CCTV {
     }
 
     private static double calculateDistance(double x, double y, Point point) {
-        double earthRadius = 6371;
-
         double lat1 = Math.toRadians(x);
         double lon1 = Math.toRadians(y);
         double lat2 = Math.toRadians(point.getX());
         double lon2 = Math.toRadians(point.getY());
 
-        return earthRadius * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));
+        return EARTHRADIUS * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1 - lon2));
     }
     public static Geometry calculateCircleRadius(double x, double y, double radius) {
         double meterToCoordinate = (radius / 100000);
