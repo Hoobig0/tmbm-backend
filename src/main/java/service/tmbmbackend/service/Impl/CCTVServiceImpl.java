@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import service.tmbmbackend.dto.CCTVMetaResponse;
 import service.tmbmbackend.dto.CCTVDataResponse;
-import service.tmbmbackend.dto.DataResponse;
 import service.tmbmbackend.dto.Response;
 import service.tmbmbackend.service.CCTVService;
 import service.tmbmbackend.dto.CCTVZoneRequest;
@@ -31,7 +30,7 @@ public class CCTVServiceImpl implements CCTVService {
         int totalCount = cctvRepository.findTotalCCTVCount(circleRadius);
 
         CCTVMetaResponse cctvMetaResponse = new CCTVMetaResponse(cctvZoneRequest, totalCount);
-        List<DataResponse> cctvDataResponse = CCTVDataResponse.toList(
+        List<CCTVDataResponse> cctvDataResponse = CCTVDataResponse.toList(
                 sortCCTVListByDistance(cctvZoneRequest.getX(), cctvZoneRequest.getY(), cctvs));
         return new Response(cctvMetaResponse, cctvDataResponse);
     }

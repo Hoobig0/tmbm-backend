@@ -7,7 +7,7 @@ import org.locationtech.jts.geom.Point;
 import service.tmbmbackend.entity.CCTV;
 
 @Getter
-public class CCTVDataResponse implements DataResponse {
+public class CCTVDataResponse {
 
     private Long cctvId;
     private String x;
@@ -23,7 +23,7 @@ public class CCTVDataResponse implements DataResponse {
         return new CCTVDataResponse(cctv.getId(), cctv.getPoint());
     }
 
-    public static List<DataResponse> toList(List<CCTV> cctvs) {
+    public static List<CCTVDataResponse> toList(List<CCTV> cctvs) {
         return cctvs.stream().map(CCTVDataResponse::from).collect(Collectors.toList());
     }
 }
