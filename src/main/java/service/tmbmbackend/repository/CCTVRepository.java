@@ -14,4 +14,7 @@ public interface CCTVRepository extends JpaRepository<CCTV, Long> {
 
     @Query("SELECT c FROM cctv as c WHERE within(c.point, :radius) = TRUE")
     List<CCTV> findWithin(@Param("radius") Geometry radius, Pageable pageable);
+
+    @Query("SELECT count(*) FROM cctv as c WHERE within(c.point, :radius) = TRUE")
+    int findTotalCCTVCount(@Param("radius") Geometry radius);
 }
