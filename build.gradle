@@ -38,6 +38,11 @@ dependencies {
 	runtimeOnly 'com.h2database:h2:2.2.220'
 	runtimeOnly 'org.orbisgis:h2gis:2.2.1'
 
+	// Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'io.lettuce:lettuce-core'
+	implementation 'org.springframework.data:spring-data-redis'
+
 	//Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
